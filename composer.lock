@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3498c1b3e0443b92775d3af8eab8174a",
-    "content-hash": "9fd15c3a32e77852e072ddac246683aa",
+    "hash": "494bbaaf0304d570c5f48c7d29cb173c",
+    "content-hash": "b76cf825a4854039d39c8f77bcc1c36e",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -2785,6 +2785,54 @@
             "time": "2017-02-20 10:23:54"
         },
         {
+            "name": "prestashop/decimal",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PrestaShop/decimal.git",
+                "reference": "42e9bc8c2ec533dc2a247f9321b8f3ed55c5341f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PrestaShop/decimal/zipball/42e9bc8c2ec533dc2a247f9321b8f3ed55c5341f",
+                "reference": "42e9bc8c2ec533dc2a247f9321b8f3ed55c5341f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "codacy/coverage": "dev-master",
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PrestaShop\\Decimal\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pablo Borowicz",
+                    "email": "eternoendless@gmail.com"
+                }
+            ],
+            "description": "Object-oriented wrapper/shim for BC Math PHP extension. Allows for arbitrary-precision math operations.",
+            "homepage": "https://github.com/prestashop/decimal",
+            "keywords": [
+                "bcmath",
+                "decimal",
+                "math",
+                "precision",
+                "prestashop"
+            ],
+            "time": "2017-08-22 14:23:19"
+        },
+        {
             "name": "prestashop/graphnvd3",
             "version": "dev-master",
             "source": {
@@ -3341,7 +3389,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShop/ps_linklist/zipball/961b2a414a4e0915a0b006cff649156500e83761",
+                "url": "https://api.github.com/repos/PrestaShop/ps_linklist/zipball/a8957320ee2f7ba529252a975ffda6543ee65d60",
                 "reference": "961b2a414a4e0915a0b006cff649156500e83761",
                 "shasum": ""
             },
@@ -3437,7 +3485,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShop/ps_sharebuttons/zipball/3ffb0b3f4006e5e28a1ca6152ff7b40a647e3419",
+                "url": "https://api.github.com/repos/PrestaShop/ps_sharebuttons/zipball/6cb2fc1100c34c44754c32eb678a70d858e970ea",
                 "reference": "3ffb0b3f4006e5e28a1ca6152ff7b40a647e3419",
                 "shasum": ""
             },
