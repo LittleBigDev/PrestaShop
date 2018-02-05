@@ -39,6 +39,7 @@ export default function() {
     $(document).on('click', '#form .product-combination-image', function() {
       var input = $(this).find('input');
       var isChecked = input.attr('checked') === 'checked';
+      // "checked" attribute needs to change in DOM, so the parameters are changed in POST request
       if (isChecked) {
         input.removeAttr('checked');
       } else {
