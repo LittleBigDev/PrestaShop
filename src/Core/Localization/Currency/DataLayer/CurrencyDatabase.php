@@ -31,6 +31,7 @@ use Exception;
 use PrestaShop\PrestaShop\Adapter\Currency\CurrencyDataProvider;
 use PrestaShop\PrestaShop\Core\Data\Layer\AbstractDataLayer;
 use PrestaShop\PrestaShop\Core\Data\Layer\DataLayerException;
+use PrestaShop\PrestaShop\Core\Localization\CLDR\Currency as CldrCurrency;
 use PrestaShop\PrestaShop\Core\Localization\Currency\CurrencyData;
 use PrestaShop\PrestaShop\Core\Localization\Currency\LocalizedCurrencyId;
 use PrestaShop\PrestaShop\Core\Localization\Currency\CurrencyDataLayerInterface;
@@ -73,7 +74,7 @@ class CurrencyDatabase extends AbstractDataLayer implements CurrencyDataLayerInt
      *
      * Data is read into database
      *
-     * @param LocalizedCurrencyId $currencyDataId
+     * @param LocalizedCurrencyId $localizedCurrencyId
      *  The CurrencyData object identifier (currency code + locale code)
      *
      * @return CurrencyData|null
@@ -82,14 +83,14 @@ class CurrencyDatabase extends AbstractDataLayer implements CurrencyDataLayerInt
      * @throws LocalizationException
      *  When $currencyDataId is invalid
      */
-    protected function doRead($currencyDataId)
+    protected function doRead($localizedCurrencyId)
     {
-        if (!$currencyDataId instanceof LocalizedCurrencyId) {
-            throw new LocalizationException('$currencyDataId must be a CurrencyDataIdentifier object');
+        if (!$localizedCurrencyId instanceof LocalizedCurrencyId) {
+            throw new LocalizationException('$currencyDataId must be a LocalizedCurrencyId object');
         }
 
-        $localeCode     = $currencyDataId->getLocaleCode();
-        $currencyCode   = $currencyDataId->getCurrencyCode();
+        $localeCode     = $localizedCurrencyId->getLocaleCode();
+        $currencyCode   = $localizedCurrencyId->getCurrencyCode();
         $currencyEntity = $this->dataProvider->getCurrencyByIsoCode($currencyCode, $localeCode);
 
         if (null === $currencyEntity) {
@@ -98,11 +99,11 @@ class CurrencyDatabase extends AbstractDataLayer implements CurrencyDataLayerInt
 
         $currencyData = new CurrencyData();
 
-        $currencyData->isoCode              = $currencyEntity->iso_code;
-        $currencyData->names[$localeCode]   = $currencyEntity->name;
-        $currencyData->numericIsoCode       = $currencyEntity->numeric_iso_code;
-        $currencyData->symbols[$localeCode] = $currencyEntity->symbol;
-        $currencyData->precision            = $currencyEntity->precision;
+        $currencyData->isoCode                                         = $currencyEntity->iso_code;
+        $currencyData->names[CldrCurrency::DISPLAY_NAME_COUNT_DEFAULT] = $currencyEntity->name;
+        $currencyData->numericIsoCode                                  = $currencyEntity->numeric_iso_code;
+        $currencyData->symbols[CldrCurrency::SYMBOL_TYPE_NARROW]       = $currencyEntity->symbol;
+        $currencyData->precision                                       = $currencyEntity->precision;
 
         return $currencyData;
     }
@@ -142,7 +143,7 @@ class CurrencyDatabase extends AbstractDataLayer implements CurrencyDataLayerInt
     protected function doWrite($currencyDataId, $currencyData)
     {
         if (!$currencyDataId instanceof LocalizedCurrencyId) {
-            throw new LocalizationException('$currencyDataId must be a CurrencyDataIdentifier object');
+            throw new LocalizationException('$currencyDataId must be a LocalizedCurrencyId object');
         }
 
         $currencyCode   = $currencyDataId->getCurrencyCode();

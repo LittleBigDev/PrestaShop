@@ -75,11 +75,11 @@ class CurrencyData
     public $numericIsoCode;
 
     /**
-     * Currency's symbols, by locale code
+     * Currency's symbols, by type
      *
      * eg.: $symbolsUSD = [
-     *     'en-US' => '$',
-     *     'es-CO' => 'US$', // In Colombia, colombian peso's symbol is "$". They have to differentiate foreign dollars.
+     *     'narrow'  => '$',
+     *     'default' => 'US$',
      * ]
      *
      * @var string[]
@@ -94,7 +94,13 @@ class CurrencyData
     public $precision;
 
     /**
-     * the currency's name, by locale code
+     * the currency's name, by count type
+     *
+     * e.g.: $namesUSD = [
+     *     'default' => 'Dollar',
+     *     'one'     => 'dollar',
+     *     'other'   => 'dollars',
+     * ]
      *
      * @var string[]
      */
@@ -129,8 +135,8 @@ class CurrencyData
         }
 
         if (isset($currencyData->names)) {
-            foreach ($currencyData->names as $localeCode => $name) {
-                $this->names[$localeCode] = $name;
+            foreach ($currencyData->names as $countType => $name) {
+                $this->names[$countType] = $name;
             }
         }
 

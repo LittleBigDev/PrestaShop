@@ -72,7 +72,7 @@ class CurrencyReference extends AbstractDataLayer implements CurrencyDataLayerIn
      *
      * Data is read from official CLDR files (via the CLDR LocaleRepository)
      *
-     * @param LocalizedCurrencyId $currencyDataId
+     * @param LocalizedCurrencyId $localizedCurrencyId
      *  The CurrencyData object identifier
      *
      * @return CurrencyData|null
@@ -82,31 +82,46 @@ class CurrencyReference extends AbstractDataLayer implements CurrencyDataLayerIn
      *  In case of invalid $currencyDataId
      *  Also in case of invalid type asked for symbol (but use a constant, so it is very unlikely...)
      */
-    protected function doRead($currencyDataId)
+    protected function doRead($localizedCurrencyId)
     {
-        if (!$currencyDataId instanceof LocalizedCurrencyId) {
-            throw new LocalizationException('$currencyDataId must be a CurrencyDataIdentifier object');
+        if (!$localizedCurrencyId instanceof LocalizedCurrencyId) {
+            throw new LocalizationException('$currencyDataId must be a LocalizedCurrencyId object');
         }
 
-        $localeCode = $currencyDataId->getLocaleCode();
+        $localeCode = $localizedCurrencyId->getLocaleCode();
         $cldrLocale = $this->cldrLocaleRepository->getLocale($localeCode);
 
         if (empty($cldrLocale)) {
             return null;
         }
 
-        $cldrCurrency = $cldrLocale->getCurrency($currencyDataId->getCurrencyCode());
+        $cldrCurrency = $cldrLocale->getCurrency($localizedCurrencyId->getCurrencyCode());
 
         if (empty($cldrCurrency)) {
             return null;
         }
 
-        $currencyData                       = new CurrencyData();
-        $currencyData->isoCode              = $cldrCurrency->getIsoCode();
-        $currencyData->numericIsoCode       = $cldrCurrency->getNumericIsoCode();
-        $currencyData->symbols[$localeCode] = $cldrCurrency->getSymbol(CldrCurrency::SYMBOL_TYPE_NARROW);
-        $currencyData->precision            = $cldrCurrency->getDecimalDigits();
-        $currencyData->names[$localeCode]   = $cldrCurrency->getDisplayName();
+        $currencyData = new CurrencyData();
+
+        $currencyData->isoCode        = $cldrCurrency->getIsoCode();
+        $currencyData->numericIsoCode = $cldrCurrency->getNumericIsoCode();
+        $currencyData->precision      = $cldrCurrency->getDecimalDigits();
+
+        $symbolDefault         = CldrCurrency::SYMBOL_TYPE_DEFAULT;
+        $symbolNarrow          = CldrCurrency::SYMBOL_TYPE_NARROW;
+        $currencyData->symbols = [
+            $symbolDefault => $cldrCurrency->getSymbol($symbolDefault),
+            $symbolNarrow  => $cldrCurrency->getSymbol($symbolNarrow),
+        ];
+
+        $nameDefault         = CldrCurrency::DISPLAY_NAME_COUNT_DEFAULT;
+        $nameOne             = CldrCurrency::DISPLAY_NAME_COUNT_ONE;
+        $nameOther           = CldrCurrency::DISPLAY_NAME_COUNT_OTHER;
+        $currencyData->names = [
+            $nameDefault => $cldrCurrency->getDisplayName($nameDefault),
+            $nameOne     => $cldrCurrency->getDisplayName($nameOne),
+            $nameOther   => $cldrCurrency->getDisplayName($nameOther),
+        ];
 
         return $currencyData;
     }

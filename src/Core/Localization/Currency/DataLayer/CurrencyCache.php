@@ -72,7 +72,7 @@ class CurrencyCache extends AbstractDataLayer implements CurrencyDataLayerInterf
      *
      * Might be a file access, cache read, DB select...
      *
-     * @param LocalizedCurrencyId $currencyDataId
+     * @param LocalizedCurrencyId $localizedCurrencyId
      *  The CurrencyData object identifier (currency code + locale code)
      *
      * @return CurrencyData|null
@@ -82,13 +82,13 @@ class CurrencyCache extends AbstractDataLayer implements CurrencyDataLayerInterf
      *  When $currencyDataId is invalid
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    protected function doRead($currencyDataId)
+    protected function doRead($localizedCurrencyId)
     {
-        if (!$currencyDataId instanceof LocalizedCurrencyId) {
-            throw new LocalizationException('$currencyDataId must be a CurrencyDataIdentifier object');
+        if (!$localizedCurrencyId instanceof LocalizedCurrencyId) {
+            throw new LocalizationException('$currencyDataId must be a LocalizedCurrencyId object');
         }
 
-        $cacheItem = $this->cache->getItem((string)$currencyDataId);
+        $cacheItem = $this->cache->getItem((string)$localizedCurrencyId);
 
         return $cacheItem->isHit()
             ? $cacheItem->get()
@@ -132,7 +132,7 @@ class CurrencyCache extends AbstractDataLayer implements CurrencyDataLayerInterf
     protected function doWrite($currencyDataId, $currencyData)
     {
         if (!$currencyDataId instanceof LocalizedCurrencyId) {
-            throw new LocalizationException('$currencyDataId must be a CurrencyDataIdentifier object');
+            throw new LocalizationException('$currencyDataId must be a LocalizedCurrencyId object');
         }
 
         $cacheItem = $this->cache->getItem((string)$currencyDataId);

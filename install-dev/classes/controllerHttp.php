@@ -25,9 +25,17 @@
  */
 
 use PrestaShopBundle\Install\LanguageList;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class InstallControllerHttp
 {
+    /**
+     * @var Context
+     */
+    protected $context;
+
     /**
      * @var StepList List of installer steps
      */
@@ -90,6 +98,12 @@ class InstallControllerHttp
      */
     protected $__vars = array();
 
+    /**
+     * Dependency container
+     * @var ContainerBuilder
+     */
+    protected $container;
+
     private function initSteps()
     {
         $stepConfig = array(
@@ -132,7 +146,7 @@ class InstallControllerHttp
         $this->session = InstallSession::getInstance();
 
         // Set current language
-        $this->language = LanguageList::getInstance();
+        $this->language  = LanguageList::getInstance();
         $detect_language = $this->language->detectLanguage();
 
         if (empty($this->session->lang)) {
@@ -159,6 +173,10 @@ class InstallControllerHttp
         if (empty(self::$steps)) {
             $this->initSteps();
         }
+
+        $this->container           = $this->buildContainer();
+        $this->context             = Context::getContext();
+        $this->context->controller = $this;
 
         $this->init();
     }
@@ -501,5 +519,16 @@ class InstallControllerHttp
     public function __unset($varname)
     {
         unset($this->__vars[$varname]);
+    }
+
+    protected function buildContainer()
+    {
+        $container = new ContainerBuilder();
+        $loader    = new YamlFileLoader($container, new FileLocator(__DIR__));
+        $env       = _PS_MODE_DEV_ === true ? 'dev' : 'prod';
+        $loader->load(_PS_CONFIG_DIR_ . 'services/front/services_' . $env . '.yml');
+        $container->compile();
+
+        return $container;
     }
 }

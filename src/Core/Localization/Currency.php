@@ -35,6 +35,12 @@ use PrestaShop\PrestaShop\Core\Localization\Exception\LocalizationException;
  */
 class Currency implements CurrencyInterface
 {
+    const SYMBOL_TYPE_DEFAULT        = 'default';
+    const SYMBOL_TYPE_NARROW         = 'narrow';
+    const DISPLAY_NAME_COUNT_DEFAULT = 'default';
+    const DISPLAY_NAME_COUNT_ONE     = 'one';
+    const DISPLAY_NAME_COUNT_OTHER   = 'other';
+
     /**
      * Is this currency active ?
      *
@@ -94,7 +100,14 @@ class Currency implements CurrencyInterface
     protected $precision;
 
     /**
-     * the currency's name, by locale code
+     * the currency's name, depending on count context
+     *
+     * e.g.: "Used currency is Dollar" (default), "I need one dollar" (one), "I need five dollars" (other)
+     * [
+     *     'default' => 'dollar',
+     *     'one'     => 'dollar',
+     *     'other'   => 'dollars',
+     * ]
      *
      * @var string[]
      */
@@ -178,13 +191,14 @@ class Currency implements CurrencyInterface
      *
      * @throws LocalizationException
      */
-    public function getSymbol($localeCode)
+    public function getSymbol($type = self::SYMBOL_TYPE_NARROW)
     {
-        if (!isset($this->symbols[$localeCode])) {
-            throw new LocalizationException("Unknown locale code : $localeCode");
+        $type = (string)$type;
+        if (!isset($this->symbols[$type])) {
+            throw new LocalizationException('Invalid symbol type: ' . print_r($type, true));
         }
 
-        return $this->symbols[$localeCode];
+        return $this->symbols[$type];
     }
 
     /**
@@ -200,12 +214,13 @@ class Currency implements CurrencyInterface
      *
      * @throws LocalizationException
      */
-    public function getName($localeCode)
+    public function getName($countContext = self::DISPLAY_NAME_COUNT_DEFAULT)
     {
-        if (!isset($this->names[$localeCode])) {
-            throw new LocalizationException("Unknown locale code : $localeCode");
+        $countContext = (string)$countContext;
+        if (!isset($this->names[$countContext])) {
+            throw new LocalizationException('Invalid count context: ' . print_r($countContext, true));
         }
 
-        return $this->names[$localeCode];
+        return $this->names[$countContext];
     }
 }

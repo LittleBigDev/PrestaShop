@@ -34,8 +34,9 @@ use Composer\CaBundle\CaBundle;
 
 class ToolsCore
 {
-    const CACERT_LOCATION           = 'https://curl.haxx.se/ca/cacert.pem';
-    const SERVICE_LOCALE_REPOSITORY = 'prestashop.core.localization.locale.repository';
+    const CACERT_LOCATION             = 'https://curl.haxx.se/ca/cacert.pem';
+    const SERVICE_CURRENCY_REPOSITORY = 'prestashop.core.localization.currency.repository';
+    const SERVICE_LOCALE_REPOSITORY   = 'prestashop.core.localization.locale.repository';
 
     protected static $file_exists_cache = array();
     protected static $_forceCompile;

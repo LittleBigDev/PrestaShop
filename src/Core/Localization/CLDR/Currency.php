@@ -147,7 +147,7 @@ class Currency
      * @return string
      *  The wanted display name
      */
-    public function getDisplayName($countContext = 'default')
+    public function getDisplayName($countContext = self::DISPLAY_NAME_COUNT_DEFAULT)
     {
         return $this->displayNames[$countContext];
     }

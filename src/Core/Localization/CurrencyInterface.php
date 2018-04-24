@@ -75,9 +75,9 @@ interface CurrencyInterface
     public function getNumericIsoCode();
 
     /**
-     * Get the currency symbol for a given locale code
+     * Get the currency symbol (of a given type. Default type is "narrow")
      *
-     * @param string $localeCode
+     * @param string $type
      *  The locale code (simplified IETF tag syntax)
      *  Combination of ISO 639-1 (2-letters language code) and ISO 3166-2 (2-letters region code)
      *  eg: fr-FR, en-US
@@ -88,7 +88,7 @@ interface CurrencyInterface
      * @return string
      *  The currency symbol for this locale
      */
-    public function getSymbol($localeCode);
+    public function getSymbol($type);
 
     /**
      * Get the number of decimal digits to use with this currency
@@ -103,7 +103,7 @@ interface CurrencyInterface
     /**
      * Get the currency's name for a given locale code
      *
-     * @param string $localeCode
+     * @param string $countContext
      *  The locale code (simplified IETF tag syntax)
      *  Combination of ISO 639-1 (2-letters language code) and ISO 3166-2 (2-letters region code)
      *  eg: fr-FR, en-US
@@ -114,5 +114,5 @@ interface CurrencyInterface
      * @return string
      *  The currency's name for this locale
      */
-    public function getName($localeCode);
+    public function getName($countContext);
 }
