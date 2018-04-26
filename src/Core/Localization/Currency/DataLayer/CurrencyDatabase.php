@@ -32,6 +32,7 @@ use PrestaShop\PrestaShop\Adapter\Currency\CurrencyDataProvider;
 use PrestaShop\PrestaShop\Core\Data\Layer\AbstractDataLayer;
 use PrestaShop\PrestaShop\Core\Data\Layer\DataLayerException;
 use PrestaShop\PrestaShop\Core\Localization\CLDR\Currency as CldrCurrency;
+use PrestaShop\PrestaShop\Core\Localization\Currency;
 use PrestaShop\PrestaShop\Core\Localization\Currency\CurrencyData;
 use PrestaShop\PrestaShop\Core\Localization\Currency\LocalizedCurrencyId;
 use PrestaShop\PrestaShop\Core\Localization\Currency\CurrencyDataLayerInterface;
@@ -150,9 +151,9 @@ class CurrencyDatabase extends AbstractDataLayer implements CurrencyDataLayerInt
         $currencyEntity = $this->dataProvider->getCurrencyByIsoCodeOrCreate($currencyCode, 'fr-FR');
 
         $currencyEntity->iso_code         = $currencyData->isoCode;
-        $currencyEntity->name             = $currencyData->names[$currencyCode];
+        $currencyEntity->name             = $currencyData->names[Currency::DISPLAY_NAME_COUNT_DEFAULT];
         $currencyEntity->numeric_iso_code = $currencyData->numericIsoCode;
-        $currencyEntity->symbol           = $currencyData->symbols[$currencyCode];
+        $currencyEntity->symbol           = $currencyData->symbols[Currency::SYMBOL_TYPE_NARROW];
         $currencyEntity->precision        = $currencyData->precision;
 
         try {

@@ -277,6 +277,19 @@ class InstallControllerHttp
         self::$steps->current()->getControllerInstance()->display();
     }
 
+    /**
+     * Gets a service from the service container.
+     *
+     * @param string $serviceId Service identifier
+     *
+     * @return object The associated service
+     * @throws Exception
+     */
+    public function get($serviceId)
+    {
+        return $this->container->get($serviceId);
+    }
+
     public function init()
     {
 

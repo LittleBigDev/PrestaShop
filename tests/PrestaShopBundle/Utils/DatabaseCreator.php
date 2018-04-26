@@ -38,10 +38,18 @@ class DatabaseCreator
      */
     public static function createTestDB()
     {
-        define('_PS_IN_TEST_', true);
-        define('__PS_BASE_URI__', '/');
-        define('_PS_ROOT_DIR_', __DIR__ . '/../../..');
-        define('_PS_MODULE_DIR_', _PS_ROOT_DIR_ . '/tests/resources/modules/');
+        if (!defined('_PS_IN_TEST_')) {
+            define('_PS_IN_TEST_', true);
+        }
+        if (!defined('__PS_BASE_URI__')) {
+            define('__PS_BASE_URI__', '/');
+        }
+        if (!defined('_PS_ROOT_DIR_')) {
+            define('_PS_ROOT_DIR_', __DIR__ . '/../../..');
+        }
+        if (!defined('_PS_MODULE_DIR_')) {
+            define('_PS_MODULE_DIR_', _PS_ROOT_DIR_ . '/tests/resources/modules/');
+        }
         require_once(__DIR__ . '/../../../install-dev/init.php');
 
         $install = new Install();
